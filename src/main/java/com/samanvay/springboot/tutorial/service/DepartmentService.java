@@ -1,6 +1,7 @@
 package com.samanvay.springboot.tutorial.service;
 
 import com.samanvay.springboot.tutorial.entity.Department;
+import com.samanvay.springboot.tutorial.errorHandling.DepartmentNotFoundException;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface DepartmentService {
 
     List<Department> fetchDepartmentList();
 
-    Department fetchDepartmentById(Long departmentId);
+    Department fetchDepartmentById(Long departmentId) throws DepartmentNotFoundException;
 
     void deleteDepartmentById(Long departmentId);
 
