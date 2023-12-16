@@ -30,11 +30,11 @@ public class DepartmentServiceImplementation implements DepartmentService {
     public Department fetchDepartmentById(Long departmentId) throws DepartmentNotFoundException {
         Optional<Department> department =  departmentRepository.findById(departmentId);
 
-        if(department.isPresent()) {
-            return department.get();
-        } else {
+        if(!department.isPresent()) {
             throw new DepartmentNotFoundException("Department not found!");
         }
+
+        return department.get();
     }
 
     @Override
@@ -47,26 +47,30 @@ public class DepartmentServiceImplementation implements DepartmentService {
     }
 
     @Override
-    public Department updateDepartment(Long departmentId, Department department) {
-        Department departmentToUpdate = departmentRepository.findById(departmentId).get();
+    public Department updateDepartment(Long departmentId, Department department) throws DepartmentNotFoundException {
+        Optional<Department> departmentToUpdate =  departmentRepository.findById(departmentId);
+
+        if(!departmentToUpdate.isPresent()) throw new DepartmentNotFoundException("Department not found!");
 
         String departmentName = department.getDepartmentName();
         String departmentAddress = department.getDepartmentCode();
         String departmentCode = department.getDepartmentAddress();
 
+        Department temporaryDepartment = departmentToUpdate.get();
+
         if(checkIfValueExists(departmentName)) {
-            departmentToUpdate.setDepartmentName(departmentName);
+            temporaryDepartment.setDepartmentName(departmentName);
         }
 
         if(checkIfValueExists(departmentCode)) {
-            departmentToUpdate.setDepartmentCode(departmentCode);
+            temporaryDepartment.setDepartmentCode(departmentCode);
         }
 
         if(checkIfValueExists(departmentAddress)) {
-            departmentToUpdate.setDepartmentAddress(departmentAddress);
+            temporaryDepartment.setDepartmentAddress(departmentAddress);
         }
 
-        return departmentRepository.save(departmentToUpdate);
+        return departmentRepository.save(temporaryDepartment);
     }
 
     @Override
