@@ -1,6 +1,7 @@
 package com.samanvay.springboot.tutorial.controller;
 
 import com.samanvay.springboot.tutorial.entity.Department;
+import com.samanvay.springboot.tutorial.errorHandling.DepartmentNotFoundException;
 import com.samanvay.springboot.tutorial.service.DepartmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public class DepartmentController {
     }
 
     @GetMapping (value = "/departments/{id}")
-    public Department fetchDepartmentById (@PathVariable("id") Long departmentId) {
+    public Department fetchDepartmentById (@PathVariable("id") Long departmentId) throws DepartmentNotFoundException {
         return departmentService.fetchDepartmentById(departmentId);
     }
 
@@ -50,7 +51,8 @@ public class DepartmentController {
     }
 
     @PutMapping (value = "/departments/{id}")
-    public Department updateDepartment (@PathVariable("id") Long departmentId, @RequestBody Department department) {
+    public Department updateDepartment (@PathVariable("id") Long departmentId, @RequestBody Department department)
+            throws DepartmentNotFoundException {
         return departmentService.updateDepartment(departmentId, department);
     }
 
